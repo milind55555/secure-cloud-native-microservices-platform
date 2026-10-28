@@ -1,0 +1,19 @@
+services:
+  user-service:
+    build: ./services/user-service
+    ports: ["8001:8000"]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+  product-service:
+    build: ./services/product-service
+    ports: ["8002:8000"]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+  order-service:
+    build: ./services/order-service
+    ports: ["8003:8000"]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]

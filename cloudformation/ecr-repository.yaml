@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Optional example - private ECR repository with image scan-on-push and lifecycle cleanup.
+Parameters:
+  RepositoryName:
+    Type: String
+    Default: secure-platform-demo
+    AllowedPattern: '[a-z0-9]+(?:[._/-][a-z0-9]+)*'
+Resources:
+  ContainerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Ref RepositoryName
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: IMMUTABLE
+      EncryptionConfiguration:
+        EncryptionType: AES256
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Keep last 30 tagged images",
+                "selection": {
+                  "tagStatus": "tagged",
+                  "tagPrefixList": ["v", "sha-"],
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 30
+                },
+                "action": {"type": "expire"}
+              }
+            ]
+          }
+Outputs:
+  RepositoryUri:
+    Description: URI for pushing versioned images
+    Value: !GetAtt ContainerRepository.RepositoryUri

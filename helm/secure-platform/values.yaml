@@ -1,0 +1,27 @@
+replicaCount: 2
+imagePullPolicy: IfNotPresent
+serviceAccount:
+  create: true
+  name: ""
+user:
+  image:
+    repository: example.invalid/user-service
+    tag: "1.0.0"
+  port: 8000
+product:
+  image:
+    repository: example.invalid/product-service
+    tag: "1.0.0"
+  port: 8000
+order:
+  image:
+    repository: example.invalid/order-service
+    tag: "1.0.0"
+  port: 8000
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
